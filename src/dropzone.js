@@ -363,6 +363,11 @@ class Dropzone extends Emitter {
       addRemoveLinks: false,
 
       /**
+       * If `true`,
+       */
+      hasPrimaryFile: false,
+
+      /**
        * Defines where to display the file previews – if `null` the
        * Dropzone element itself is used. Can be a plain `HTMLElement` or a CSS
        * selector. The element should have the `dropzone-previews` class so
@@ -756,6 +761,20 @@ class Dropzone extends Emitter {
           }
           for (node of file.previewElement.querySelectorAll("[data-dz-size]")) {
             node.innerHTML = this.filesize(file.size);
+          }
+
+          let selectPrimaryFileEvent = e => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (file.status === Dropzone.UPLOADING) {
+                return;
+              }
+              return this.selectPrimaryFile(file);
+          };
+
+          if (this.options.hasPrimaryFile) {
+            let image = file.previewElement.querySelector(".dz-image");
+            image.addEventListener("click", selectPrimaryFileEvent)
           }
 
           if (this.options.addRemoveLinks) {
@@ -1384,6 +1403,14 @@ class Dropzone extends Emitter {
     }
   }
 
+  selectPrimaryFile(file) {
+    file.previewElement.parentNode.querySelectorAll(".dz-preview").forEach(node => {
+        node.classList.remove("dz-primary-file");
+    });
+    file.previewElement.classList.add("dz-primary-file");
+
+    this.emit("selectedprimaryfile", file);
+  }
 
   drop(e) {
     if (!e.dataTransfer) {
