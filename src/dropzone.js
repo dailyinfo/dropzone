@@ -773,8 +773,8 @@ class Dropzone extends Emitter {
           };
 
           if (this.options.hasPrimaryFile) {
-            let image = file.previewElement.querySelector(".dz-image");
-            image.addEventListener("click", selectPrimaryFileEvent)
+            let trigger = file.previewElement.querySelector(".dz-select-primary-file-trigger");
+            trigger.addEventListener("click", selectPrimaryFileEvent)
           }
 
           if (this.options.addRemoveLinks) {
