@@ -791,8 +791,8 @@ var Dropzone = function (_Emitter) {
             };
 
             if (this.options.hasPrimaryFile) {
-              var image = file.previewElement.querySelector(".dz-image");
-              image.addEventListener("click", selectPrimaryFileEvent);
+              var trigger = file.previewElement.querySelector(".dz-select-primary-file-trigger");
+              trigger.addEventListener("click", selectPrimaryFileEvent);
             }
 
             if (this.options.addRemoveLinks) {
