@@ -1636,10 +1636,10 @@ var Dropzone = function (_Emitter) {
         node.classList.remove("dz-primary-file");
       });
       file.previewElement.parentNode.querySelectorAll("[dz-select-primary-file-trigger]").forEach(function (node) {
-        node.removeElement("disabled");
+        node.removeAttribute("disabled");
       });
       file.previewElement.classList.add("dz-primary-file");
-      file.previewElement.setAttribute("disabled");
+      file.previewElement.querySelector("[dz-select-primary-file-trigger]").setAttribute("disabled");
 
       this.emit("selectedprimaryfile", file);
     }
