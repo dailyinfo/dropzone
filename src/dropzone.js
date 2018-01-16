@@ -888,7 +888,8 @@ class Dropzone extends Emitter {
       // Receives `file`
       success(file) {
         if (file.previewElement) {
-          return file.previewElement.classList.add("dz-success");
+            return file.previewElement.querySelector("[dz-select-primary-file-trigger]").removeAttribute("disabled")
+                && file.previewElement.classList.add("dz-success");
         }
       },
 

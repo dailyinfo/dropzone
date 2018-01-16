@@ -973,6 +973,7 @@ var Dropzone = function (_Emitter) {
         // Receives `file`
         success: function success(file) {
           if (file.previewElement) {
+            file.previewElement.querySelector("[dz-select-primary-file-trigger]").removeAttribute("disabled");
             return file.previewElement.classList.add("dz-success");
           }
         },
