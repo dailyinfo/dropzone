@@ -1407,7 +1407,11 @@ class Dropzone extends Emitter {
     file.previewElement.parentNode.querySelectorAll(".dz-preview").forEach(node => {
         node.classList.remove("dz-primary-file");
     });
+    file.previewElement.parentNode.querySelectorAll("[dz-select-primary-file-trigger]").forEach(node => {
+        node.removeElement("disabled");
+    });
     file.previewElement.classList.add("dz-primary-file");
+    file.previewElement.setAttribute("disabled");
 
     this.emit("selectedprimaryfile", file);
   }
