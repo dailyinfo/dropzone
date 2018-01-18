@@ -1423,7 +1423,7 @@ class Dropzone extends Emitter {
         node.removeAttribute("disabled");
     });
     file.previewElement.classList.add("dz-primary-file");
-    file.previewElement.addAttribute("data-dz-primary-file");
+    file.previewElement.setAttribute("data-dz-primary-file", "");
     file.previewElement.querySelector("[dz-select-primary-file-trigger]").setAttribute("disabled", "disabled");
 
     this.emit("selectedprimaryfile", file);
