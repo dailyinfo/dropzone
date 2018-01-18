@@ -988,7 +988,10 @@ var Dropzone = function (_Emitter) {
         // Receives `file`
         success: function success(file) {
           if (file.previewElement) {
-            return file.previewElement.querySelector("[dz-select-primary-file-trigger]").removeAttribute("disabled") && file.previewElement.classList.add("dz-success");
+            if (!file.previewElement.hasAttribute("data-dz-primary-file")) {
+              file.previewElement.querySelector("[dz-select-primary-file-trigger]").removeAttribute("disabled");
+            }
+            return file.previewElement.classList.add("dz-success");
           }
         },
         successmultiple: function successmultiple() {},
