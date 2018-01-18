@@ -389,6 +389,11 @@ var Dropzone = function (_Emitter) {
         hasPrimaryFile: false,
 
         /**
+         *
+         */
+        setFirstFileAsPrimary: false,
+
+        /**
          * Defines where to display the file previews – if `null` the
          * Dropzone element itself is used. Can be a plain `HTMLElement` or a CSS
          * selector. The element should have the `dropzone-previews` class so
@@ -855,9 +860,13 @@ var Dropzone = function (_Emitter) {
           if (file.previewElement != null && file.previewElement.parentNode != null) {
             file.previewElement.parentNode.removeChild(file.previewElement);
           }
+          if (this.options.hasPrimaryFile && this.options.setFirstFileAsPrimary) {
+            if (file.previewElement.hasAttribute("[data-dz-primary-file]") && this.files.length > 0) {
+              this.selectPrimaryFile(this.files[0]);
+            }
+          }
           return this._updateMaxFilesReachedClass();
         },
-
 
         // Called when a thumbnail has been generated
         // Receives `file` and `dataUrl`
@@ -973,8 +982,7 @@ var Dropzone = function (_Emitter) {
         // Receives `file`
         success: function success(file) {
           if (file.previewElement) {
-            file.previewElement.querySelector("[dz-select-primary-file-trigger]").removeAttribute("disabled");
-            return file.previewElement.classList.add("dz-success");
+            return file.previewElement.querySelector("[dz-select-primary-file-trigger]").removeAttribute("disabled") && file.previewElement.classList.add("dz-success");
           }
         },
         successmultiple: function successmultiple() {},
@@ -1647,11 +1655,13 @@ var Dropzone = function (_Emitter) {
     value: function selectPrimaryFile(file) {
       file.previewElement.parentNode.querySelectorAll(".dz-preview").forEach(function (node) {
         node.classList.remove("dz-primary-file");
+        node.removeAttribute("data-dz-primary-file");
       });
       file.previewElement.parentNode.querySelectorAll("[dz-select-primary-file-trigger]").forEach(function (node) {
         node.removeAttribute("disabled");
       });
       file.previewElement.classList.add("dz-primary-file");
+      file.addAttribute("data-dz-primary-file");
       file.previewElement.querySelector("[dz-select-primary-file-trigger]").setAttribute("disabled", "disabled");
 
       this.emit("selectedprimaryfile", file);
