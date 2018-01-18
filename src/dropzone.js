@@ -368,6 +368,11 @@ class Dropzone extends Emitter {
       hasPrimaryFile: false,
 
       /**
+       *
+       */
+      setFirstFileAsPrimary: false,
+
+      /**
        * Defines where to display the file previews – if `null` the
        * Dropzone element itself is used. Can be a plain `HTMLElement` or a CSS
        * selector. The element should have the `dropzone-previews` class so
@@ -774,7 +779,7 @@ class Dropzone extends Emitter {
 
           if (this.options.hasPrimaryFile) {
             let trigger = file.previewElement.querySelector(".dz-select-primary-file-trigger");
-            trigger.addEventListener("click", selectPrimaryFileEvent)
+            trigger.addEventListener("click", selectPrimaryFileEvent);
           }
 
           if (this.options.addRemoveLinks) {
@@ -804,9 +809,14 @@ class Dropzone extends Emitter {
 
 
       // Called whenever a file is removed.
-      removedfile(file) {
+      removedfile: function removedfile(file) {
         if (file.previewElement != null && file.previewElement.parentNode != null) {
           file.previewElement.parentNode.removeChild(file.previewElement);
+        }
+        if (this.options.hasPrimaryFile && this.options.setFirstFileAsPrimary) {
+          if (file.previewElement.hasAttribute("[data-dz-primary-file]") && this.files.length > 0) {
+            this.selectPrimaryFile(this.files[0]);
+          }
         }
         return this._updateMaxFilesReachedClass();
       },
@@ -1407,12 +1417,14 @@ class Dropzone extends Emitter {
   selectPrimaryFile(file) {
     file.previewElement.parentNode.querySelectorAll(".dz-preview").forEach(node => {
         node.classList.remove("dz-primary-file");
+        node.removeAttribute("data-dz-primary-file");
     });
     file.previewElement.parentNode.querySelectorAll("[dz-select-primary-file-trigger]").forEach(node => {
         node.removeAttribute("disabled");
     });
     file.previewElement.classList.add("dz-primary-file");
-    file.previewElement.querySelector("[dz-select-primary-file-trigger]").setAttribute("disabled", "disabled");
+      file.addAttribute("data-dz-primary-file");
+      file.previewElement.querySelector("[dz-select-primary-file-trigger]").setAttribute("disabled", "disabled");
 
     this.emit("selectedprimaryfile", file);
   }
