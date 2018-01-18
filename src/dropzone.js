@@ -810,7 +810,7 @@ class Dropzone extends Emitter {
 
       // Called whenever a file is removed.
       removedfile: function removedfile(file) {
-        let isPrimary = file.previewElement.hasAttribute("[data-dz-primary-file]");
+        let isPrimary = file.previewElement.hasAttribute("data-dz-primary-file");
         if (file.previewElement != null && file.previewElement.parentNode != null) {
           file.previewElement.parentNode.removeChild(file.previewElement);
         }
