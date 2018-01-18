@@ -780,6 +780,11 @@ class Dropzone extends Emitter {
           if (this.options.hasPrimaryFile) {
             let trigger = file.previewElement.querySelector(".dz-select-primary-file-trigger");
             trigger.addEventListener("click", selectPrimaryFileEvent);
+              if (this.options.setFirstFileAsPrimary) {
+                  if (this.files.length === 1) {
+                      this.selectPrimaryFile(this.files[0]);
+                  }
+              }
           }
 
           if (this.options.addRemoveLinks) {
